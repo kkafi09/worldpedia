@@ -62,7 +62,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="w-3/12 mt-10 pt-4 flex justify-between text-white">
+        <div className="w-8/12 sm:w-6/12 md:w-4/12  mt-6 pt-4 flex justify-between text-white">
           {timerOn || time > 0 ? (
             ""
           ) : (
