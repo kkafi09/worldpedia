@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState, useEffect } from "react";
 
 export default function Home() {
@@ -38,6 +39,13 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Stopwatch | kkafi09</title>
+        <link
+          rel="icon"
+          href="https://avatars.githubusercontent.com/u/59825140?v=4"
+        ></link>
+      </Head>
       <div className="w-full h-screen bg-main flex justify-center items-center flex-col transition ease-in-out delay-300 ">
         <div className="w-[250px] h-[250px] rounded-full bg-white flex justify-center items-center">
           <div className="w-[230px] h-[230px] rounded-full bg-main flex justify-center items-center">
