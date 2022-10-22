@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Breadcrumb from "../components/BreadCrumb";
 import BreadcrumbItem from "../components/BreadCrumbItem";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -29,22 +31,26 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      <Breadcrumb>
-        <BreadcrumbItem isCurrent={router.pathname === "/"} href="/">
-          Home
-        </BreadcrumbItem>
-        {breadcrumbs &&
-          breadcrumbs.map((breadcrumb) => (
-            <BreadcrumbItem
-              key={breadcrumb.href}
-              href={breadcrumb.href}
-              isCurrent={breadcrumb.isCurrent}
-            >
-              {breadcrumb.label}
-            </BreadcrumbItem>
-          ))}
-      </Breadcrumb>
-      <Component {...pageProps} />
+      <div className="w-8/12 mx-auto">
+        <Navbar />
+        <Breadcrumb>
+          <BreadcrumbItem isCurrent={router.pathname === "/"} href="/">
+            Home
+          </BreadcrumbItem>
+          {breadcrumbs &&
+            breadcrumbs.map((breadcrumb) => (
+              <BreadcrumbItem
+                key={breadcrumb.href}
+                href={breadcrumb.href}
+                isCurrent={breadcrumb.isCurrent}
+              >
+                {breadcrumb.label}
+              </BreadcrumbItem>
+            ))}
+        </Breadcrumb>
+        <Component {...pageProps} />
+        <Footer />
+      </div>
     </>
   );
 }

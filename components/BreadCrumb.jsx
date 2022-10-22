@@ -12,7 +12,7 @@ const Breadcrumb = ({ children }) => {
   });
 
   return (
-    <nav className="text-sm breadcrumbs" aria-label="breadcrumb">
+    <nav className="mx-6 text-sm breadcrumbs" aria-label="breadcrumb">
       <ul>{childrenWtihSeperator}</ul>
     </nav>
   );
