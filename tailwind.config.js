@@ -6,11 +6,14 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        main: "#191919",
-        secondary: "#282c34",
+      fontFamily: {
+        nunito: ["Nunito", "sans-serif"],
+        secular: ["Secular One", "sans-serif"],
       },
     },
   },
-  plugins: [],
+  daisyui: {
+    themes: ["night"],
+  },
+  plugins: [require("daisyui")],
 };
