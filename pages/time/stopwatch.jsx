@@ -1,42 +1,57 @@
 import Head from "next/head";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import ButtonStopwatch from "../../components/ButtonStopwatch";
+import StopwatchTimer from "../../components/StopwatchTimer";
 
 const Stopwatch = () => {
-  const [time, setTime] = useState(0);
-  const [timerOn, setTimerOn] = useState(false);
-  const [datas, setDatas] = useState([]);
+  const [time, setTime] = useState({ ms: 0, s: 0, m: 0, h: 0 });
+  const [interv, setInterv] = useState();
+  const [status, setStatus] = useState(0);
+  // Not started = 0
+  // started = 1
+  // stopped = 2z
 
-  useEffect(() => {
-    let interval = null;
+  const start = () => {
+    run();
+    setStatus(1);
+    setInterv(setInterval(run, 10));
+  };
 
-    if (timerOn) {
-      interval = setInterval(() => {
-        setTime((prev) => prev + 10);
-      });
-    } else {
-      clearInterval(interval);
+  var updatedMs = time.ms,
+    updatedS = time.s,
+    updatedM = time.m,
+    updatedH = time.h;
+
+  const run = () => {
+    if (updatedM === 60) {
+      updatedH++;
+      updatedM = 0;
     }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [timerOn]);
-
-  const addData = () => {
-    setDatas([
-      ...datas,
-      {
-        time: time,
-      },
-    ]);
+    if (updatedS === 60) {
+      updatedM++;
+      updatedS = 0;
+    }
+    if (updatedMs === 100) {
+      updatedS++;
+      updatedMs = 0;
+    }
+    updatedMs++;
+    return setTime({ ms: updatedMs, s: updatedS, m: updatedM, h: updatedH });
   };
 
-  const resetButtonHandle = () => {
-    setDatas([]);
-    setTime(0);
-    setTimerOn(false);
+  const stop = () => {
+    clearInterval(interv);
+    setStatus(2);
   };
+
+  const reset = () => {
+    clearInterval(interv);
+    setStatus(0);
+    setTime({ ms: 0, s: 0, m: 0, h: 0 });
+  };
+
+  const resume = () => start();
+
   return (
     <>
       <Head>
@@ -54,92 +69,18 @@ const Stopwatch = () => {
         ></link>
       </Head>
       <div className="flex my-3">
-        <div className="bg-primary-content w-2/3 ml-6 mr-3 h-72 flex justify-center items-center flex-col rounded-md">
-          <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
-            <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-              {time > 3600000 ? (
-                <span className=" font-mono text-5xl">
-                  <span>
-                    {("0" + Math.floor((time / 3600000) % 600)).slice(-2)}
-                  </span>
-                  days
-                </span>
-              ) : (
-                ""
-              )}
-            </div>
-            <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-              <span className=" font-mono text-5xl">
-                <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}</span>
-              </span>
-              min
-            </div>
-            <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-              <span className="font-mono text-5xl">
-                <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
-              </span>
-              sec
-            </div>
-            <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-              <span className="font-mono text-5xl">
-                <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
-              </span>
-              ms
-            </div>
+        <div className="bg-primary-content w-2/3 ml-6 mr-3 h-72 flex flex-col rounded-md items-center justify-center">
+          <h1 className="text-2xl font-bold px-4 mr-auto">Stopwatch</h1>
+          <div className="mx-auto my-5 bg-primary-content flex flex-col rounded-md items-center justify-center w-full text-[6vw]">
+            <StopwatchTimer time={time} />
           </div>
-
-          <div className="w-8/12 sm:w-6/12 md:w-4/12  mt-6 pt-4 flex justify-between text-white">
-            {timerOn || time > 0 ? (
-              ""
-            ) : (
-              <button
-                className="w-[60px] h-[60px] mx-auto rounded-full border-2 border-white bg-black pointer text-sm"
-                onClick={() => setTimerOn(true)}
-              >
-                Start
-              </button>
-            )}
-            {!timerOn ? (
-              ""
-            ) : (
-              <button
-                className="w-[60px] h-[60px] mx-auto rounded-full border-2 border-white bg-black pointer text-sm"
-                onClick={() => setTimerOn(false)}
-              >
-                Stop
-              </button>
-            )}
-            {!timerOn && time > 0 ? (
-              <button
-                className="w-[60px] h-[60px] mx-auto rounded-full border-2 border-white bg-black pointer text-sm"
-                onClick={() => setTimerOn(true)}
-              >
-                Resume
-              </button>
-            ) : (
-              ""
-            )}
-            {time != 0 ? (
-              <button
-                className="w-[60px] h-[60px] mx-auto rounded-full border-2 border-white bg-black pointer text-sm"
-                onClick={resetButtonHandle}
-              >
-                Reset
-              </button>
-            ) : (
-              ""
-            )}
-            {time >= 0 && !timerOn ? (
-              ""
-            ) : (
-              <button
-                className="w-[60px] h-[60px] mx-auto rounded-full border-2 border-white bg-black pointer text-sm"
-                onClick={addData}
-              >
-                Lap
-              </button>
-            )}
-          </div>
+          <ButtonStopwatch
+            status={status}
+            resume={resume}
+            reset={reset}
+            stop={stop}
+            start={start}
+          />
         </div>
       </div>
     </>
