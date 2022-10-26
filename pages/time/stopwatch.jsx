@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import ButtonStopwatch from "../../components/ButtonStopwatch";
+import Navigation from "../../components/Navigation";
 import StopwatchTimer from "../../components/StopwatchTimer";
 
 const Stopwatch = () => {
@@ -82,6 +83,7 @@ const Stopwatch = () => {
             start={start}
           />
         </div>
+        <Navigation />
       </div>
     </>
   );

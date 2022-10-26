@@ -11,9 +11,9 @@ export default function StopwatchTimer(props) {
   return (
     <div className="font-mono px-0">
       {h()}
-      <span>{props.time.m > 9 ? props.time.m : "0" + props.time.m}</span>:
-      <span>{props.time.s > 9 ? props.time.s : "0" + props.time.s}</span>:
-      <span>{props.time.ms > 9 ? props.time.ms : "0" + props.time.ms}</span>
+      <span>{props.time.m >= 10 ? props.time.m : "0" + props.time.m}</span>:
+      <span>{props.time.s >= 10 ? props.time.s : "0" + props.time.s}</span>:
+      <span>{props.time.ms >= 10 ? props.time.ms : "0" + props.time.ms}</span>
     </div>
   );
 }
